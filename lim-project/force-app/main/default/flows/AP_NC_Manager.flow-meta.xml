@@ -135,10 +135,10 @@
             <name>Record_Found</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_Custom_Settings.Id</leftValueReference>
-                <operator>WasSet</operator>
+                <leftValueReference>fetchedCustomSettings.Id</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -257,7 +257,7 @@
         <label>Get Custom Settings</label>
         <locationX>451</locationX>
         <locationY>58</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_for_AP_NC_Stored</targetReference>
         </connector>
@@ -269,9 +269,59 @@
                 <elementReference>$User.Id</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>LinkedIn_AP_NC_Settings__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.AP_Created__c</assignToReference>
+            <field>AP_Created__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.AP_Name__c</assignToReference>
+            <field>AP_Name__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.Client_Id__c</assignToReference>
+            <field>Client_Id__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.Client_Secret__c</assignToReference>
+            <field>Client_Secret__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.Id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.Marketing_Developer_Product__c</assignToReference>
+            <field>Marketing_Developer_Product__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.NC_Authenticated__c</assignToReference>
+            <field>NC_Authenticated__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.NC_Created__c</assignToReference>
+            <field>NC_Created__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.NC_Name__c</assignToReference>
+            <field>NC_Name__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.Scopes__c</assignToReference>
+            <field>Scopes__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.SetupOwnerId</assignToReference>
+            <field>SetupOwnerId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.Share_On_Product__c</assignToReference>
+            <field>Share_On_Product__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>fetchedCustomSettings.Sign_In_Product__c</assignToReference>
+            <field>Sign_In_Product__c</field>
+        </outputAssignments>
     </recordLookups>
     <recordLookups>
         <name>Get_Records_for_AP</name>
@@ -328,7 +378,7 @@
         </connector>
         <fields>
             <name>apncStatusText</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;AP Created: &lt;/b&gt;&lt;span style=&quot;font-size: 14px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;{!fetchedCustomSettings.AP_Created__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;NC Created: &lt;/b&gt;&lt;span style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!fetchedCustomSettings.NC_Created__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;NC Authenticated:&lt;/b&gt;&lt;span style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!fetchedCustomSettings.NC_Authenticated__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(0, 0, 0); font-size: 14px;&quot;&gt;AP Created: &lt;/b&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;{!fetchedCustomSettings.AP_Created__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(0, 0, 0); font-size: 14px;&quot;&gt;NC Created: &lt;/b&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px;&quot;&gt;{!fetchedCustomSettings.NC_Created__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(0, 0, 0); font-size: 14px;&quot;&gt;NC Authenticated: &lt;/b&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 14px;&quot;&gt;{!fetchedCustomSettings.NC_Authenticated__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
