@@ -3,7 +3,7 @@
     <fullName>NC_Authenticated__c</fullName>
     <defaultValue>false</defaultValue>
     <externalId>false</externalId>
-    <fieldManageability>SubscriberControlled</fieldManageability>
     <label>NC Authenticated</label>
+    <trackTrending>false</trackTrending>
     <type>Checkbox</type>
 </CustomField>
