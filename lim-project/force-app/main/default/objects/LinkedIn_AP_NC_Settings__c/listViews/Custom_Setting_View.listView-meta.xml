@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Custom_Setting_View</fullName>
+    <columns>SETUP_OWNER_NAME</columns>
+    <columns>AP_Created__c</columns>
+    <columns>AP_Name__c</columns>
+    <columns>Client_Id__c</columns>
+    <columns>Client_Secret__c</columns>
+    <columns>Marketing_Developer_Product__c</columns>
+    <columns>NC_Authenticated__c</columns>
+    <columns>NC_Created__c</columns>
+    <columns>NC_Name__c</columns>
+    <columns>Share_On_Product__c</columns>
+    <columns>Sign_In_Product__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Custom Setting View</label>
+</ListView>
