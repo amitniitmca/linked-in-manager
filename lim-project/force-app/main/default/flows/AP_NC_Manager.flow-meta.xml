@@ -135,12 +135,15 @@
             <name>Record_Found</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_AP_NC_from_Custom_Settings.Id</leftValueReference>
+                <leftValueReference>Get_Custom_Settings.Id</leftValueReference>
                 <operator>WasSet</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
+            <connector>
+                <targetReference>AP_NC_Status</targetReference>
+            </connector>
             <label>Record Found</label>
         </rules>
     </decisions>
@@ -182,6 +185,28 @@
                 <targetReference>Show_Error_for_AP_Name_existence</targetReference>
             </connector>
             <label>AP name exists</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_For_Status_Update</name>
+        <label>Decision For Status Update</label>
+        <locationX>373</locationX>
+        <locationY>274</locationY>
+        <defaultConnectorLabel>AP Created</defaultConnectorLabel>
+        <rules>
+            <name>Create_AP</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fetchedCustomSettings.AP_Created__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_AP_Subflow</targetReference>
+            </connector>
+            <label>Create AP</label>
         </rules>
     </decisions>
     <formulas>
@@ -228,8 +253,8 @@
         <inputReference>customSettingsRecordVariable</inputReference>
     </recordCreates>
     <recordLookups>
-        <name>Get_AP_NC_from_Custom_Settings</name>
-        <label>Get AP &amp; NC from Custom Settings</label>
+        <name>Get_Custom_Settings</name>
+        <label>Get Custom Settings</label>
         <locationX>451</locationX>
         <locationY>58</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -290,6 +315,41 @@
         <object>NamedCredential</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <screens>
+        <name>AP_NC_Status</name>
+        <label>AP NC Status</label>
+        <locationX>752</locationX>
+        <locationY>273</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_For_Status_Update</targetReference>
+        </connector>
+        <fields>
+            <name>apncStatusText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;AP Created: &lt;/b&gt;&lt;span style=&quot;font-size: 14px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;{!fetchedCustomSettings.AP_Created__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;NC Created: &lt;/b&gt;&lt;span style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!fetchedCustomSettings.NC_Created__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;NC Authenticated:&lt;/b&gt;&lt;span style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;{!fetchedCustomSettings.NC_Authenticated__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Created_AP_Status</name>
+        <label>Created AP Status</label>
+        <locationX>161</locationX>
+        <locationY>536</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>createdApStatus</name>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px; color: rgb(2, 144, 11);&quot;&gt;AP Created Successfully!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Please copy the following callback URL to be pasted in your LinkedIn App.&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <screens>
         <name>Get_AP_NC_Info</name>
         <label>Get AP NC Info</label>
@@ -419,7 +479,6 @@
             </fields>
             <isRequired>false</isRequired>
         </fields>
-        <nextOrFinishButtonLabel>Create</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -465,10 +524,30 @@
         <locationX>50</locationX>
         <locationY>39</locationY>
         <connector>
-            <targetReference>Get_AP_NC_from_Custom_Settings</targetReference>
+            <targetReference>Get_Custom_Settings</targetReference>
         </connector>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>Create_AP_Subflow</name>
+        <label>Create AP Subflow</label>
+        <locationX>161</locationX>
+        <locationY>362</locationY>
+        <connector>
+            <targetReference>Created_AP_Status</targetReference>
+        </connector>
+        <flowName>AP_Creator</flowName>
+        <inputAssignments>
+            <name>customSettingsVariable</name>
+            <value>
+                <elementReference>fetchedCustomSettings</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>authProviderRecordVariable</assignToReference>
+            <name>authProviderRecordVariable</name>
+        </outputAssignments>
+    </subflows>
     <variables>
         <name>authProviderRecordVariable</name>
         <dataType>SObject</dataType>
@@ -479,6 +558,14 @@
     </variables>
     <variables>
         <name>customSettingsRecordVariable</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>LinkedIn_AP_NC_Settings__c</objectType>
+    </variables>
+    <variables>
+        <name>fetchedCustomSettings</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
