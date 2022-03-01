@@ -4,6 +4,8 @@
     "**/bower_components": true,
     "**/.sfdx": true
   },
-  "salesforcedx-vscode-core.detectConflictsAtSync": true,
-  "SFDoc.username": "Amit Kumar [amitniitmca@gmail.com]"
+  "SFDoc.username": "Amit Kumar [amitniitmca@gmail.com]",
+  "SFDoc.EnableForLightningJavascript": true,
+  "SFDoc.IncludParameterTypeInMethodHeader": true,
+  "SFDoc.IncludeModificationLogScaffoldInFileHeader": true
 }
