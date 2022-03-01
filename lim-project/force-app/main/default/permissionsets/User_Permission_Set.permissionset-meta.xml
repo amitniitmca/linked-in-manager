@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingAccesses>
+        <enabled>true</enabled>
+        <name>LinkedIn_AP_NC_Settings__c</name>
+    </customSettingAccesses>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>User Permission Set</label>
+</PermissionSet>
