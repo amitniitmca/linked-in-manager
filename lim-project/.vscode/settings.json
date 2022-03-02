@@ -5,7 +5,7 @@
     "**/.sfdx": true
   },
   "SFDoc.username": "Amit Kumar [amitniitmca@gmail.com]",
-  "SFDoc.EnableForLightningJavascript": true,
   "SFDoc.IncludParameterTypeInMethodHeader": true,
-  "SFDoc.IncludeModificationLogScaffoldInFileHeader": true
+  "SFDoc.IncludeModificationLogScaffoldInFileHeader": true,
+  "SFDoc.EnableForLightningJavascript": true
 }

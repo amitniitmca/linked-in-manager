@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>This custom setting is to specify whether the Administrator wants an Org Specific Connection (Single Page Manager) or User Specific Connection (Individual Profile Manager)</description>
+    <enableFeeds>false</enableFeeds>
+    <label>Manager Type</label>
+    <visibility>Protected</visibility>
+</CustomObject>
