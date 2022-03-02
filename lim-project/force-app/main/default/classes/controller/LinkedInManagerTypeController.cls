@@ -20,10 +20,11 @@ public inherited sharing class LinkedInManagerTypeController {
     }
 
     @AuraEnabled(cacheable=true)
-    public static String getStoredManagerTypeValue(){
+    public static Boolean isCurrentUserAdmin(){
         try {
-            Manager_Type__c managerType = new ManagerTypeService().getStoredValue();
-            return managerType.Value__c;
+            Id profileId= UserInfo.getProfileId();
+            String profileName=[SELECT Id,Name from Profile where Id=:profileId].Name;
+            return profileName == 'System Administrator';
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }

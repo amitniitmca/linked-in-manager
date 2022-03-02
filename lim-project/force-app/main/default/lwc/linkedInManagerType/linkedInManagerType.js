@@ -10,6 +10,7 @@
 import { LightningElement, wire } from 'lwc';
 import isLinkedInManagerTypeSaved from '@salesforce/apex/LinkedInManagerTypeController.isLinkedInManagerTypeSaved';
 import storeManagerTypeValue from '@salesforce/apex/LinkedInManagerTypeController.storeManagerTypeValue';
+import isCurrentUserAdmin from '@salesforce/apex/LinkedInManagerTypeController.isCurrentUserAdmin';
 import {refreshApex} from '@salesforce/apex';
 
 const OPTIONS = [
@@ -24,6 +25,7 @@ export default class LinkedInManagerType extends LightningElement {
     linkedInManagerTypeValue='---SELECT---';
 
     showLinkedInManagerType=true;
+    isAdmin=true;
     
     wiredIsLinkedInManagerTypeSavedResult;
     @wire(isLinkedInManagerTypeSaved)
@@ -37,6 +39,17 @@ export default class LinkedInManagerType extends LightningElement {
             this.showMessage('error','error',error);
         }
     }
+
+    @wire(isCurrentUserAdmin)
+    wiredIsCurrentUserAdmin(data, error){
+        if(data){
+            this.isAdmin = data.data;
+        }
+        if(error){
+            this.showMessage('error','error',error);
+        }
+    }
+
 
     handleLinkedInManagerTypeChange(event){
         this.linkedInManagerTypeValue = event.target.value;
