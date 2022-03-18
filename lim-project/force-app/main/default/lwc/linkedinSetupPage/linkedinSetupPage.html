@@ -2,7 +2,7 @@
   @description       : 
   @author            : Amit Kumar [amitniitmca@gmail.com]
   @group             : 
-  @last modified on  : 02-03-2022
+  @last modified on  : 19-03-2022
   @last modified by  : Amit Kumar [amitniitmca@gmail.com]
   Modifications Log
   Ver   Date         Author                               Modification
@@ -13,31 +13,35 @@
         <lightning-layout multiple-rows>
             <lightning-layout-item size="8">
                 <lightning-layout multiple-rows>
-                    
+
                     <!-- Type of LinkedIn Manager -->
-                    <lightning-layout-item size="12">
-                        <c-linked-in-manager-type></c-linked-in-manager-type>
-                    </lightning-layout-item>
-    
+                    <template if:true={isAdmin}>
+                        <template if:true={showLinkedInManagerType}>
+                            <lightning-layout-item size="12">
+                                <c-linked-in-manager-type onstored={handledManagerTypeStored}></c-linked-in-manager-type>
+                            </lightning-layout-item>
+                        </template>
+                    </template>
+
                     <!-- Store Named Credential -->
                     <lightning-layout-item size="12">
-                        
+
                     </lightning-layout-item>
-    
+
                     <!-- Test Connection -->
                     <lightning-layout-item size="12">
-                        
+
                     </lightning-layout-item>
-                    
+
                     <!-- Organization Page -->
                     <lightning-layout-item size="12">
-                        
+
                     </lightning-layout-item>
-                    
-                </lightning-layout>    
+
+                </lightning-layout>
             </lightning-layout-item>
             <lightning-layout-item size="4">
-                
+
             </lightning-layout-item>
         </lightning-layout>
     </lightning-card>

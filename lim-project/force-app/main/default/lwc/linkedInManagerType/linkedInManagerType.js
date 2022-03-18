@@ -1,55 +1,25 @@
 /**
  * @description       : LinkedInManagerType LWC is used to specify the LinkedIn Manager Type
  * @author            : Amit Kumar [amitniitmca@gmail.com]
- * @last modified on  : 02-03-2022
+ * @last modified on  : 19-03-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
  * 1.0   02-03-2022   Amit Kumar [amitniitmca@gmail.com]   Initial Version
 **/
-import { LightningElement, wire } from 'lwc';
-import isLinkedInManagerTypeSaved from '@salesforce/apex/LinkedInManagerTypeController.isLinkedInManagerTypeSaved';
+import { LightningElement, track } from 'lwc';
 import storeManagerTypeValue from '@salesforce/apex/LinkedInManagerTypeController.storeManagerTypeValue';
-import isCurrentUserAdmin from '@salesforce/apex/LinkedInManagerTypeController.isCurrentUserAdmin';
-import {refreshApex} from '@salesforce/apex';
 
 const OPTIONS = [
     {label: '---SELECT TYPE---', value: '---SELECT---'},
     {label: 'Company Page Manager', value: 'ORG'},
     {label: 'Individual Profile Manager', value: 'USER'}
 ];
-
 export default class LinkedInManagerType extends LightningElement {
-
-    linkedInManagerTypeOptions = OPTIONS;
-    linkedInManagerTypeValue='---SELECT---';
-
-    showLinkedInManagerType=true;
-    isAdmin=true;
     
-    wiredIsLinkedInManagerTypeSavedResult;
-    @wire(isLinkedInManagerTypeSaved)
-    wiredIsLinkedInManagerTypeSaved(result){
-        this.wiredIsLinkedInManagerTypeSavedResult = result;
-        const {data, error} = result;
-        if(data){
-            this.showLinkedInManagerType = !data;
-        }
-        if(error){
-            this.showMessage('error','error',error);
-        }
-    }
-
-    @wire(isCurrentUserAdmin)
-    wiredIsCurrentUserAdmin(data, error){
-        if(data){
-            this.isAdmin = data.data;
-        }
-        if(error){
-            this.showMessage('error','error',error);
-        }
-    }
-
+    @track linkedInManagerTypeOptions = OPTIONS;
+    @track linkedInManagerTypeValue='---SELECT---';
+    // @api showPanel;
 
     handleLinkedInManagerTypeChange(event){
         this.linkedInManagerTypeValue = event.target.value;
@@ -63,7 +33,7 @@ export default class LinkedInManagerType extends LightningElement {
             storeManagerTypeValue({value : this.linkedInManagerTypeValue})
             .then(result=>{
                 this.showMessage('success', 'Successful', "LinkedIn Manager Type Stored Successfully!");
-                refreshApex(this.wiredIsLinkedInManagerTypeSavedResult);
+                this.dispatchEvent(new CustomEvent('stored'));
             })
             .catch(error=>{
                 this.showMessage('error', "Unable to Store", "LinkedIn Manager Type can't be Stored!");
