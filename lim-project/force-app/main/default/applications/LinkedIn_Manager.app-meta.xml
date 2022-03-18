@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0070D2</headerColor>
+        <logo>limanlogo</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
+    </brand>
+    <description>This Lightning App is a Linked Management System used to manage Linked In profile and Company Page. Admin can utilize it for whole org working for company page or by individual users for their specific profile.</description>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>true</isNavPersonalizationDisabled>
+    <label>LinkedIn Manager</label>
+    <navType>Standard</navType>
+    <tabs>LinkedIn_Manager_Setup</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>LinkedIn_Manager_UtilityBar</utilityBar>
+</CustomApplication>
