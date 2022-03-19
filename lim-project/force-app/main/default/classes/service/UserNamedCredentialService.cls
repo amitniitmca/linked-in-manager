@@ -1,7 +1,7 @@
 /**
  * @description       : UserNamedCredentialService class is used to perform operations on User_Named_Credential_Service custom setting
  * @author            : Amit Kumar [amitniitmca@gmail.com]
- * @last modified on  : 02-03-2022
+ * @last modified on  : 19-03-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -56,7 +56,7 @@ public inherited sharing class UserNamedCredentialService{
     * @return List<User_Named_Credential__c> It returns the list of all stored records in the custom settings
     **/
     public List<User_Named_Credential__c> getAllStoredValues(){
-        List<User_Named_Credential__c> userDetails = [SELECT Id, Value__c FROM User_Named_Credential__c WITH SECURITY_ENFORCED];
+        List<User_Named_Credential__c> userDetails = [SELECT Id, Value__c, SetupOwnerId  FROM User_Named_Credential__c WITH SECURITY_ENFORCED];
         return userDetails;
     }
 
