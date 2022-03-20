@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Amit Kumar [amitniitmca@gmail.com]
  * @group             : 
- * @last modified on  : 19-03-2022
+ * @last modified on  : 20-03-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -14,12 +14,13 @@ import {refreshApex} from '@salesforce/apex';
 import LI_Resource from '@salesforce/resourceUrl/LI_Resource';
 import isLinkedInManagerTypeSaved from '@salesforce/apex/LinkedInSetupPageController.isLinkedInManagerTypeSaved';
 import isCurrentUserAdmin from '@salesforce/apex/LinkedInSetupPageController.isCurrentUserAdmin';
-
+import getStoredManagerType from '@salesforce/apex/LinkedInSetupPageController.getStoredManagerType';
 
 export default class LinkedinSetupPage extends LightningElement {
 
     @track showLinkedInManagerType=true;
     @track isAdmin=true;
+    @track managerType;
     
     wiredIsLinkedInManagerTypeSavedResult;
     @wire(isLinkedInManagerTypeSaved)
@@ -44,7 +45,17 @@ export default class LinkedinSetupPage extends LightningElement {
         if(error){
             this.showMessage('error','error',error);
         }
-    }    
+    }
+
+    @wire(getStoredManagerType)
+    wiredGetStoredManagerType(data, error){
+        if(data){
+            this.managerType = data.data;
+        }
+        if(error){
+            console.log(error);
+        }
+    }
 
     resourceLoaded=false;
     renderedCallback(){

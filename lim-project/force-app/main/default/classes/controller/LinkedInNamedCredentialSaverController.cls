@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Amit Kumar [amitniitmca@gmail.com]
  * @group             : 
- * @last modified on  : 19-03-2022
+ * @last modified on  : 20-03-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -32,5 +32,19 @@ public inherited sharing class LinkedInNamedCredentialSaverController {
             }
         }
         return flag;
+    }
+
+    @AuraEnabled
+    public static void storeNamedCredential(String value, Boolean isAdmin){
+        try {
+            if(isAdmin){
+                new UserNamedCredentialService().storeRecordForOrg(value);
+            }
+            else{
+                new UserNamedCredentialService().storeRecordForUser(value);
+            }
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
     }
 }

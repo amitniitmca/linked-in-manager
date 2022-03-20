@@ -2,7 +2,7 @@
   @description       : 
   @author            : Amit Kumar [amitniitmca@gmail.com]
   @group             : 
-  @last modified on  : 19-03-2022
+  @last modified on  : 20-03-2022
   @last modified by  : Amit Kumar [amitniitmca@gmail.com]
   Modifications Log
   Ver   Date         Author                               Modification
@@ -18,14 +18,21 @@
                     <template if:true={isAdmin}>
                         <template if:true={showLinkedInManagerType}>
                             <lightning-layout-item size="12">
-                                <c-linked-in-manager-type onstored={handledManagerTypeStored}></c-linked-in-manager-type>
+                                <c-linked-in-manager-type onstored={handledManagerTypeStored}>
+                                </c-linked-in-manager-type>
                             </lightning-layout-item>
                         </template>
                     </template>
 
                     <!-- Store Named Credential -->
                     <lightning-layout-item size="12">
-                        <c-linked-in-named-credential-saver></c-linked-in-named-credential-saver>
+                        <template if:false={showLinkedInManagerType}>
+                            <template if:true={managerType}>
+                                <c-linked-in-named-credential-saver admin-user={isAdmin}
+                                    manager-type-user={managerType}>
+                                </c-linked-in-named-credential-saver>
+                            </template>
+                        </template>
                     </lightning-layout-item>
 
                     <!-- Test Connection -->
