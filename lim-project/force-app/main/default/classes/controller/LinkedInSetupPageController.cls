@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Amit Kumar [amitniitmca@gmail.com]
  * @group             : 
- * @last modified on  : 26-03-2022
+ * @last modified on  : 27-03-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -96,6 +96,31 @@ public inherited sharing class LinkedInSetupPageController {
             else{
                 return new UserNamedCredentialService().getStoredValueForOrg();
             }
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static Boolean isConnected(){
+        try {
+            Map<String,String> statusMap = LinkedInConnections.getConnectionStatus();
+            if(statusMap.get('StatusCode') == '200' && statusMap.get('Status') == 'OK'){
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static Map<String,String> getCurrentBasicInfo(){
+        try {
+            Map<String,String> statusMap = LinkedInConnections.getConnectionStatus();
+            return statusMap;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
