@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Amit Kumar [amitniitmca@gmail.com]
  * @group             : 
- * @last modified on  : 26-03-2022
+ * @last modified on  : 27-03-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -19,6 +19,7 @@ import storeManagerTypeValue from '@salesforce/apex/LinkedInSetupPageController.
 import getAvailableNamedCredentials from '@salesforce/apex/LinkedInSetupPageController.getAvailableNamedCredentials';
 import isNamedCredentialForUserSaved from '@salesforce/apex/LinkedInSetupPageController.isNamedCredentialForUserSaved';
 import storeNamedCredential from '@salesforce/apex/LinkedInSetupPageController.storeNamedCredential';
+import isConnected from '@salesforce/apex/LinkedInSetupPageController.isConnected';
 
 const HEADING_TEXT = "Use the following links if you haven't created any Auth. Provider and Named Credential yet.";
 const NC_UNAVAILABLE_TEXT = "No Named Credential is available to store!";
@@ -44,6 +45,9 @@ export default class LinkedinSetupPage extends LightningElement {
     @track ncAvailable = false;
     @track ncSaved;
     @track isViewable = true;
+
+    @track connectionStatus;
+    @track connectionStatusClass="slds-var-p-around_medium";
 
     @wire(isLinkedInManagerTypeSaved)
     wiredIsLinkedInManagerTypeSaved(result) {
@@ -119,6 +123,7 @@ export default class LinkedinSetupPage extends LightningElement {
     connectedCallback() {
         loadStyle(this, LI_Resource + '/style.css');
         loadStyle(this, LI_Resource + '/NoHeader.css');
+        
     }
 
     checkForViewable() {
@@ -194,5 +199,22 @@ export default class LinkedinSetupPage extends LightningElement {
                 toast.showInfoMessage(title, message);
                 break;
         }
+    }
+
+    handleTestConnectionClick(){
+        isConnected()
+        .then(result=>{
+            if(result === true){
+                this.connectionStatus = "Connected";
+                this.connectionStatusClass = "slds-var-p-around_medium connection-status-connected"
+            }
+            else{
+                this.connectionStatus = "Not Connected";
+                this.connectionStatusClass = "slds-var-p-around_medium connection-status-not-connected"
+            }
+        })
+        .catch(error=>{
+            console.log(error);
+        });
     }
 }
