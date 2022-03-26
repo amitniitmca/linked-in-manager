@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Amit Kumar [amitniitmca@gmail.com]
  * @group             : 
- * @last modified on  : 20-03-2022
+ * @last modified on  : 26-03-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -35,6 +35,62 @@ public inherited sharing class LinkedInSetupPageController {
         try {
             Manager_Type__c manType = new ManagerTypeService().getStoredValue();
             return manType.Value__c;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static void storeManagerTypeValue(String value){
+        try {
+            new ManagerTypeService().storeRecord(value);
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<String> getAvailableNamedCredentials(){
+        List<NamedCredential> ncs = [SELECT Id , DeveloperName FROM NamedCredential WITH SECURITY_ENFORCED];
+        List<String> ncNames = new List<String>();
+        for(NamedCredential nc : ncs){
+            ncNames.add(nc.DeveloperName);
+        }
+        return ncNames;
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static Boolean isNamedCredentialForUserSaved(){
+        List<User_Named_Credential__c> uncs = new UserNamedCredentialService().getAllStoredValues();
+        Id userId = UserInfo.getUserId();
+        Boolean flag = false;
+        for(User_Named_Credential__c unc : uncs){
+            if(unc.SetupOwnerId == userId){
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
+
+    @AuraEnabled
+    public static void storeNamedCredential(String value, String managerTypeUser){
+        try {
+            if(managerTypeUser == 'ORG'){
+                new UserNamedCredentialService().storeRecordForOrg(value);
+            }
+            else{
+                new UserNamedCredentialService().storeRecordForUser(value);
+            }
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static String getStoredNamedCredential(String managerTypeUser){
+        try {
+            
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
