@@ -87,10 +87,15 @@ public inherited sharing class LinkedInSetupPageController {
         }
     }
 
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static String getStoredNamedCredential(String managerTypeUser){
         try {
-            
+            if(managerTypeUser == 'USER'){
+                return new UserNamedCredentialService().getStoredValueForUser();
+            }
+            else{
+                return new UserNamedCredentialService().getStoredValueForOrg();
+            }
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
