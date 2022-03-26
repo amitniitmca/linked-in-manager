@@ -1,7 +1,7 @@
 /**
  * @description       : UserNamedCredentialService class is used to perform operations on User_Named_Credential_Service custom setting
  * @author            : Amit Kumar [amitniitmca@gmail.com]
- * @last modified on  : 19-03-2022
+ * @last modified on  : 26-03-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -58,6 +58,37 @@ public inherited sharing class UserNamedCredentialService{
     public List<User_Named_Credential__c> getAllStoredValues(){
         List<User_Named_Credential__c> userDetails = [SELECT Id, Value__c, SetupOwnerId  FROM User_Named_Credential__c WITH SECURITY_ENFORCED];
         return userDetails;
+    }
+
+    /**
+    * @description This method is used to return stored named credentials for the current user
+    * @author Amit Kumar [amitniitmca@gmail.com] | 26-03-2022 
+    * @return String It returns the stored named credential of the current user in the custom settings
+    **/
+    public String getStoredValueForUser(){
+        Id userId = UserInfo.getUserId();
+        return UserNamedCredentialService.getStoredValue(userId);
+    }
+
+    /**
+    * @description This method is used to return stored named credentials for the org
+    * @author Amit Kumar [amitniitmca@gmail.com] | 26-03-2022 
+    * @return String It returns the stored named credential of the org in the custom settings
+    **/
+    public String getStoredValueForOrg(){
+        Id orgId = UserInfo.getOrganizationId();
+        return UserNamedCredentialService.getStoredValue(orgId);
+    }
+
+    /**
+    * @description This private method is to return the stored named credential for the specified owner id
+    * @author Amit Kumar [amitniitmca@gmail.com] | 26-03-2022 
+    * @param Id ownerId It is the owner id for the custom setting record, which can be for current user or org
+    * @return String It returns the stored named credential of the specified owner id in the custom settings
+    **/
+    private static String getStoredValue(Id ownerId){
+        User_Named_Credential__c unc = User_Named_Credential__c.getInstance(ownerId);
+        return unc.Value__c;
     }
 
     /**
