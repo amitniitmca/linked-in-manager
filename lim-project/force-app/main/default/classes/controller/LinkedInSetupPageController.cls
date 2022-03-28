@@ -119,8 +119,17 @@ public inherited sharing class LinkedInSetupPageController {
     @AuraEnabled
     public static Map<String,String> getCurrentBasicInfo(){
         try {
-            Map<String,String> statusMap = LinkedInConnections.getConnectionStatus();
+            Map<String,String> statusMap = LinkedInConnections.getCurrentProfileBasicInfo();
             return statusMap;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static String getProfilePictureInfo(){
+        try {
+            return LinkedInConnections.getProfilePicture();
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }

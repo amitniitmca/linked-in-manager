@@ -20,6 +20,7 @@ import getAvailableNamedCredentials from '@salesforce/apex/LinkedInSetupPageCont
 import isNamedCredentialForUserSaved from '@salesforce/apex/LinkedInSetupPageController.isNamedCredentialForUserSaved';
 import storeNamedCredential from '@salesforce/apex/LinkedInSetupPageController.storeNamedCredential';
 import isConnected from '@salesforce/apex/LinkedInSetupPageController.isConnected';
+import getProfilePictureInfo from '@salesforce/apex/LinkedInSetupPageController.getProfilePictureInfo';
 
 const HEADING_TEXT = "Use the following links if you haven't created any Auth. Provider and Named Credential yet.";
 const NC_UNAVAILABLE_TEXT = "No Named Credential is available to store!";
@@ -207,6 +208,11 @@ export default class LinkedinSetupPage extends LightningElement {
             if(result === true){
                 this.connectionStatus = "Connected";
                 this.connectionStatusClass = "slds-var-p-around_medium connection-status-connected"
+                getProfilePictureInfo()
+                .then(res=>{
+                    console.log(res);
+                })
+                .catch(err=>{});
             }
             else{
                 this.connectionStatus = "Not Connected";

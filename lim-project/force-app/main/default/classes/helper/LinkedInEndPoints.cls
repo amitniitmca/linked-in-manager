@@ -22,7 +22,11 @@ public inherited sharing class LinkedInEndPoints {
         NAMED_CREDENTIALS = 'callout:'+nc;
     }
 
-    public static String getCurrentMemberBasic(){
+    public static String currentMemberBasic(){
         return NAMED_CREDENTIALS+'/me?projection=(id,localizedFirstName,localizedLastName)';
+    }
+
+    public static String profilePicture(){
+        return NAMED_CREDENTIALS+'/me?projection=(id,profilePicture(displayImage~digitalmediaAsset:playableStreams))';
     }
 }

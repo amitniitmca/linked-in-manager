@@ -1,2 +1,4 @@
 
-LinkedInApNcSettingsModel.updateAuthCreation();
+
+
+LinkedInConnections.getEmailAddress();
