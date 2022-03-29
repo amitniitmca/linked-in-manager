@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Amit Kumar [amitniitmca@gmail.com]
  * @group             : 
- * @last modified on  : 27-03-2022
+ * @last modified on  : 29-03-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -111,25 +111,6 @@ public inherited sharing class LinkedInSetupPageController {
             else{
                 return false;
             }
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
-        }
-    }
-
-    @AuraEnabled
-    public static Map<String,String> getCurrentBasicInfo(){
-        try {
-            Map<String,String> statusMap = LinkedInConnections.getCurrentProfileBasicInfo();
-            return statusMap;
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
-        }
-    }
-
-    @AuraEnabled
-    public static String getProfilePictureInfo(){
-        try {
-            return LinkedInConnections.getProfilePicture();
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
