@@ -1,42 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
-    <actionOverrides>
-        <actionName>Tab</actionName>
-        <content>LinkedIn_Home</content>
-        <formFactor>Large</formFactor>
-        <skipRecordTypeSelect>false</skipRecordTypeSelect>
-        <type>Flexipage</type>
-        <pageOrSobjectType>standard-home</pageOrSobjectType>
-    </actionOverrides>
     <brand>
-        <headerColor>#5C499D</headerColor>
-        <logo>linkedinuser844602</logo>
+        <headerColor>#0070D2</headerColor>
+        <logo>limanlogo</logo>
         <logoVersion>1</logoVersion>
         <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
+    <description>This Lightning App is a Linked Management System used to manage Linked In profile and Company Page. Admin can utilize it for whole org working for company page or by individual users for their specific profile.</description>
     <formFactors>Small</formFactors>
     <formFactors>Large</formFactors>
-    <isNavAutoTempTabsDisabled>true</isNavAutoTempTabsDisabled>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>true</isNavPersonalizationDisabled>
     <label>LinkedIn Manager</label>
     <navType>Standard</navType>
-    <profileActionOverrides>
-        <actionName>Tab</actionName>
-        <content>LinkedIn_Home</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>standard-home</pageOrSobjectType>
-        <type>Flexipage</type>
-        <profile>Admin</profile>
-    </profileActionOverrides>
-    <profileActionOverrides>
-        <actionName>Tab</actionName>
-        <content>LinkedIn_Home</content>
-        <formFactor>Large</formFactor>
-        <pageOrSobjectType>standard-home</pageOrSobjectType>
-        <type>Flexipage</type>
-        <profile>Standard</profile>
-    </profileActionOverrides>
-    <tabs>standard-home</tabs>
+    <tabs>LinkedIn_Manager_Setup</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>LinkedIn_Manager_UtilityBar</utilityBar>
 </CustomApplication>

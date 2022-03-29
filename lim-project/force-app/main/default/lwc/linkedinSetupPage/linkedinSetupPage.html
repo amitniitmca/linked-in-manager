@@ -1,0 +1,117 @@
+<!--
+  @description       : 
+  @author            : Amit Kumar [amitniitmca@gmail.com]
+  @group             : 
+  @last modified on  : 27-03-2022
+  @last modified by  : Amit Kumar [amitniitmca@gmail.com]
+  Modifications Log
+  Ver   Date         Author                               Modification
+  1.0   02-03-2022   Amit Kumar [amitniitmca@gmail.com]   Initial Version
+-->
+<template>
+    <lightning-card class="main-body-card slds-is-relative">
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="12">
+                <lightning-layout multiple-rows>
+
+                    <!-- Type of LinkedIn Manager -->
+                    <lightning-layout-item size="12">
+                        <template if:true={showLinkedInManagerType}>
+                            <lightning-card title="LinkedIn Manager Type" icon-name="standard:settings">
+                                <div class="slds-var-p-around_small">
+                                    <p class="slds-text-heading_small slds-var-p-left_small">Choose the Type of Linked
+                                        In Manager to be used in the Org</p>
+                                    <lightning-layout multiple-rows>
+                                        <lightning-layout-item size="6" class="slds-var-p-around_small">
+                                            <lightning-combobox name="managerTypeCombobox"
+                                                label="Choose LinkedIn Manager Type" value={linkedInManagerTypeValue}
+                                                options={linkedInManagerTypeOptions}
+                                                onchange={handleLinkedInManagerTypeChange} variant="label-hidden">
+                                            </lightning-combobox>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="6" class="slds-var-p-around_small">
+                                            <lightning-button variant="brand" label="Submit" title="Submit"
+                                                name="managerTypeSubmit" onclick={handleSubmitClick}>
+                                            </lightning-button>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </div>
+                            </lightning-card>
+                        </template>
+                    </lightning-layout-item>
+
+                    <!-- Store Named Credential -->
+                    <lightning-layout-item size="12">
+                        <template if:false={showLinkedInManagerType}>
+                            <template if:true={isViewable}>
+                                <lightning-card title="LinkedIn NC Saver" icon-name="standard:maintenance_asset">
+                                    <lightning-layout multiple-rows  class="slds-border_bottom">
+                                        <lightning-layout-item size="12"
+                                            class="slds-text-heading_small slds-var-p-around_medium">
+                                            <lightning-formatted-text value={headingText}></lightning-formatted-text>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="12" class="slds-var-p-around_medium">
+                                            <a href="/lightning/setup/AuthProviders/home" target="_blank">Click Here</a>
+                                            for Auth. Provider and <a href="/lightning/setup/NamedCredential/home"
+                                                target="_blank">Click Here</a> for Named Credential
+                                        </lightning-layout-item>
+                                        <template if:true={ncAvailable}>
+                                            <lightning-layout-item size="3"
+                                                class="slds-var-p-around_medium slds-var-m-top_xx-small">
+                                                <label>Choose Named Credential:</label>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="6" class="slds-var-p-around_medium">
+                                                <lightning-combobox name="ncCombobox" label="Choose Named Credential:"
+                                                    value={selectedNC} options={ncOptions} onchange={handleNcChange}
+                                                    variant="label-hidden" disabled={ncSaved}>
+                                                </lightning-combobox>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="3" class="slds-var-p-around_medium">
+                                                <lightning-button variant="brand" label="Submit" title="Submit"
+                                                    name="namedCredentialSubmit" onclick={handleSubmitClick}
+                                                    disabled={ncSaved}>
+                                                </lightning-button>
+                                            </lightning-layout-item>
+                                        </template>
+                                        <template if:false={ncAvailable}>
+                                            <lightning-layout-item size="12" class="slds-var-p-around_medium">
+                                                <div class="slds-text-color_destructive">
+                                                    <p>{ncUnavailableText}</p>
+                                                </div>
+                                            </lightning-layout-item>
+                                        </template>
+                                    </lightning-layout>
+                                </lightning-card>
+                            </template>
+                        </template>
+                    </lightning-layout-item>
+
+                    <!-- Test Connection -->
+                    <lightning-layout-item size="12">
+                        <lightning-card title="Test Connection Panel" icon-name="standard:asset_audit">
+                            <lightning-layout multiple-rows  class="slds-border_bottom">
+                                <lightning-layout-item size="4" class="slds-var-p-around_medium">
+                                    <label>
+                                        Connection Status:
+                                    </label>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="4" class={connectionStatusClass}>
+                                    <!-- <label class={connectionStatusClass}>
+                                        {connectionStatus}
+                                    </label> -->
+                                    <lightning-formatted-text value={connectionStatus}></lightning-formatted-text>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="4" class="slds-var-p-top_xx-small slds-var-p-left_large">
+                                    <lightning-button variant="brand" label="Test Connection" title="Test Connection"
+                                        onclick={handleTestConnectionClick}></lightning-button>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-card>
+                    </lightning-layout-item>
+                    
+                </lightning-layout>
+            </lightning-layout-item>
+        </lightning-layout>
+        <c-custom-toast></c-custom-toast>
+    </lightning-card>
+</template>

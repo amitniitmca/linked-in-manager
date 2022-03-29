@@ -1,0 +1,21 @@
+.main-body-card{
+    font-family: "Metropolis Regular";
+}
+
+.connection-status-connected{
+    background-color: darkgreen;
+    color : gold;
+    border-radius: 40px;
+    text-align: center;
+    font-size: medium;
+    padding: 10px;
+}
+
+.connection-status-not-connected{
+    background-color: red;
+    color : gold;
+    border-radius: 40px;
+    text-align: center;
+    font-size: medium;
+    padding: 10px;
+}
