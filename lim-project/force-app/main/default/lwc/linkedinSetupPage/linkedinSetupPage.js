@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Amit Kumar [amitniitmca@gmail.com]
  * @group             : 
- * @last modified on  : 27-03-2022
+ * @last modified on  : 29-03-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -11,6 +11,8 @@
 import { LightningElement, wire, track } from 'lwc';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import { refreshApex } from '@salesforce/apex';
+import { publish, MessageContext } from 'lightning/messageService';
+import connectionChannel from '@salesforce/messageChannel/connectionChannel__c';
 import LI_Resource from '@salesforce/resourceUrl/LI_Resource';
 import isLinkedInManagerTypeSaved from '@salesforce/apex/LinkedInSetupPageController.isLinkedInManagerTypeSaved';
 import isCurrentUserAdmin from '@salesforce/apex/LinkedInSetupPageController.isCurrentUserAdmin';
@@ -20,7 +22,6 @@ import getAvailableNamedCredentials from '@salesforce/apex/LinkedInSetupPageCont
 import isNamedCredentialForUserSaved from '@salesforce/apex/LinkedInSetupPageController.isNamedCredentialForUserSaved';
 import storeNamedCredential from '@salesforce/apex/LinkedInSetupPageController.storeNamedCredential';
 import isConnected from '@salesforce/apex/LinkedInSetupPageController.isConnected';
-import getProfilePictureInfo from '@salesforce/apex/LinkedInSetupPageController.getProfilePictureInfo';
 
 const HEADING_TEXT = "Use the following links if you haven't created any Auth. Provider and Named Credential yet.";
 const NC_UNAVAILABLE_TEXT = "No Named Credential is available to store!";
@@ -48,7 +49,10 @@ export default class LinkedinSetupPage extends LightningElement {
     @track isViewable = true;
 
     @track connectionStatus;
-    @track connectionStatusClass="slds-var-p-around_medium";
+    @track connectionStatusClass = "slds-var-p-around_medium";
+
+    @wire(MessageContext)
+    messageContext;
 
     @wire(isLinkedInManagerTypeSaved)
     wiredIsLinkedInManagerTypeSaved(result) {
@@ -124,7 +128,6 @@ export default class LinkedinSetupPage extends LightningElement {
     connectedCallback() {
         loadStyle(this, LI_Resource + '/style.css');
         loadStyle(this, LI_Resource + '/NoHeader.css');
-        
     }
 
     checkForViewable() {
@@ -202,25 +205,26 @@ export default class LinkedinSetupPage extends LightningElement {
         }
     }
 
-    handleTestConnectionClick(){
+    handleTestConnectionClick() {
         isConnected()
-        .then(result=>{
-            if(result === true){
-                this.connectionStatus = "Connected";
-                this.connectionStatusClass = "slds-var-p-around_medium connection-status-connected"
-                getProfilePictureInfo()
-                .then(res=>{
-                    console.log(res);
-                })
-                .catch(err=>{});
-            }
-            else{
-                this.connectionStatus = "Not Connected";
-                this.connectionStatusClass = "slds-var-p-around_medium connection-status-not-connected"
-            }
-        })
-        .catch(error=>{
-            console.log(error);
-        });
+            .then(result => {
+                if (result === true) {
+                    this.connectionStatus = "Connected";
+                    this.connectionStatusClass = "slds-var-p-around_medium connection-status-connected"
+                    const connectionLoad = { isConnected: true };
+                    publish(this.messageContext, connectionChannel, connectionLoad);
+                }
+                else {
+                    this.connectionStatus = "Not Connected";
+                    this.connectionStatusClass = "slds-var-p-around_medium connection-status-not-connected";
+                    const connectionLoad = { isConnected: false };
+                    publish(this.messageContext, connectionChannel, connectionLoad);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                const connectionLoad = { isConnected: false };
+                publish(this.messageContext, connectionChannel, connectionLoad);
+            });
     }
 }
