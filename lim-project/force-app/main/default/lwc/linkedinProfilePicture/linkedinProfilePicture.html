@@ -1,8 +1,7 @@
 <!--
   @description       : 
   @author            : Amit Kumar [amitniitmca@gmail.com]
-  @group             : 
-  @last modified on  : 29-03-2022
+  @last modified on  : 03-04-2022
   @last modified by  : Amit Kumar [amitniitmca@gmail.com]
   Modifications Log
   Ver   Date         Author                               Modification
@@ -12,12 +11,24 @@
     <template if:true={profilePictureUrl}>
         <lightning-card title="LinkedIn Profile" icon-name="standard:people">
             <div class="slds-var-p-around_large">
-                <div class="slds-align_absolute-center">
-                    <img src={profilePictureUrl} alt="Profile Picture" />
-                </div>
-                <div class="slds-align_absolute-center slds-text-heading_medium">
-                    <label>{userName}</label>
-                </div>
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="12">
+                        <div class="slds-align_absolute-center">
+                            <img src={profilePictureUrl} alt="Profile Picture" />
+                        </div>
+                        <div class="slds-align_absolute-center slds-text-heading_medium">
+                            <label>{userName}</label>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="8" class="slds-var-p-right_medium">
+                        <lightning-input type="password" variant="standard" name="companyIdInput" label="Enter Company Id"
+                            data-id="companyIdInput"></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="4" class="slds-var-p-left_medium slds-var-p-top_large">
+                        <lightning-button variant="brand" label="Save" title="save" onclick={handleSaveClick}></lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+
             </div>
         </lightning-card>
     </template>
