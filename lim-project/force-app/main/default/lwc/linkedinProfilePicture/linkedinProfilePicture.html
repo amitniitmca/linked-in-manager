@@ -1,7 +1,7 @@
 <!--
   @description       : 
   @author            : Amit Kumar [amitniitmca@gmail.com]
-  @last modified on  : 03-04-2022
+  @last modified on  : 04-04-2022
   @last modified by  : Amit Kumar [amitniitmca@gmail.com]
   Modifications Log
   Ver   Date         Author                               Modification
@@ -20,16 +20,16 @@
                             <label>{userName}</label>
                         </div>
                     </lightning-layout-item>
-                    <lightning-layout-item size="8" class="slds-var-p-right_medium">
+                    <lightning-layout-item size="8" class="slds-var-p-right_medium slds-align_absolute-center">
                         <lightning-input type="password" variant="standard" name="companyIdInput" label="Enter Company Id"
-                            data-id="companyIdInput"></lightning-input>
+                            data-id="companyIdInput" onchange={handleCompanyChange}></lightning-input>
                     </lightning-layout-item>
                     <lightning-layout-item size="4" class="slds-var-p-left_medium slds-var-p-top_large">
                         <lightning-button variant="brand" label="Save" title="save" onclick={handleSaveClick}></lightning-button>
                     </lightning-layout-item>
                 </lightning-layout>
-
             </div>
+            <c-custom-toast></c-custom-toast>
         </lightning-card>
     </template>
 </template>
