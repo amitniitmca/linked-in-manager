@@ -1,8 +1,7 @@
 /**
  * @description       : 
  * @author            : Amit Kumar [amitniitmca@gmail.com]
- * @group             : 
- * @last modified on  : 29-03-2022
+ * @last modified on  : 04-04-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -13,6 +12,9 @@ import { subscribe, unsubscribe, APPLICATION_SCOPE, MessageContext } from 'light
 import connectionChannel from '@salesforce/messageChannel/connectionChannel__c';
 import getCurrentBasicInfo from '@salesforce/apex/LinkedInProfilePictureController.getCurrentBasicInfo';
 import getProfilePictureInfo from '@salesforce/apex/LinkedInProfilePictureController.getProfilePictureInfo';
+import storeCompanyId from '@salesforce/apex/LinkedInProfilePictureController.storeCompanyId';
+import isCompanyIdStored from '@salesforce/apex/LinkedInProfilePictureController.isCompanyIdStored';
+import getStoredCompanyId from '@salesforce/apex/LinkedInProfilePictureController.getStoredCompanyId';
 
 export default class LinkedinProfilePicture extends LightningElement {
     subscription = null;
@@ -20,9 +22,34 @@ export default class LinkedinProfilePicture extends LightningElement {
     isConnected=false;
     userName;
     profilePictureUrl;
+    companyId;
 
     @wire(MessageContext)
     messageContext;
+
+    @wire(isCompanyIdStored)
+    wiredIsCompanyIdStored(result){
+        this.wiredIsCompanyIdStoredResult = result;
+        const {data, error} = result;
+        if(data){
+            if(data === true){
+                console.log('company id stored');
+                getStoredCompanyId()
+                .then(res=>{
+                    console.log(res);
+                })
+                .catch(err=>{
+                    console.log(err);
+                });
+            }
+            else{
+                console.log('company id not stored');
+            }
+        }
+        if(error) {
+            console.log(error);
+        }
+    }
 
     renderedCallback(){
         this.subscribeMC();
@@ -65,6 +92,25 @@ export default class LinkedinProfilePicture extends LightningElement {
             if(size === 800){
                 this.profilePictureUrl = ele.identifiers[0].identifier;
             }
+        }
+    }
+
+    handleCompanyChange(event){
+        this.companyId = event.detail.value;
+    }
+
+    handleSaveClick(){
+        if(this.companyId === undefined || this.companyId.length === 0){
+            this.template.querySelector("c-custom-toast").showErrorMessage("Error", "Please provide Company Id to save");
+        }
+        else{
+            storeCompanyId({value : this.companyId})
+            .then(result =>{
+                this.template.querySelector("c-custom-toast").showSuccessMessage("Success", "Company Id stored Successfully!");    
+            })
+            .catch(error=>{
+                this.template.querySelector("c-custom-toast").showErrorMessage("Error", error.message+", Please contact your administrator!");
+            });
         }
     }
 
