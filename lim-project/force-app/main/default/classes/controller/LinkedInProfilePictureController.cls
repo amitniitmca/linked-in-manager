@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Amit Kumar [amitniitmca@gmail.com]
  * @group             : 
- * @last modified on  : 03-04-2022
+ * @last modified on  : 04-04-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -27,6 +27,42 @@ public inherited sharing class LinkedInProfilePictureController {
     public static String getProfilePictureInfo(){
         try {
             return LinkedInConnections.getProfilePicture();
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled
+    public static void storeCompanyId(String value){
+        try {
+            new LinkedInIdsService().storeRecordForOrg(value);
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static Boolean isCompanyIdStored(){
+        try {
+            return new LinkedInIdsService().isValueStoredForOrg();
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static Boolean isUserIdStored(){
+        try {
+            return new LinkedInIdsService().isValueStoredForUser();
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static String getStoredCompanyId(){
+        try {
+            return new LinkedInIdsService().getStoredOrgValue();
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
