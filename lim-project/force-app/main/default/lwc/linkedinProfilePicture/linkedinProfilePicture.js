@@ -37,9 +37,11 @@ export default class LinkedinProfilePicture extends LightningElement {
                 getStoredCompanyId()
                 .then(res=>{
                     console.log(res);
+                    this.companyId = res;
                 })
                 .catch(err=>{
                     console.log(err);
+                    this.companyId = undefined;
                 });
             }
             else{
