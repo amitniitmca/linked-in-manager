@@ -20,13 +20,21 @@
                             <label>{userName}</label>
                         </div>
                     </lightning-layout-item>
-                    <lightning-layout-item size="8" class="slds-var-p-right_medium slds-align_absolute-center">
-                        <lightning-input type="password" variant="standard" name="companyIdInput" label="Enter Company Id"
-                            data-id="companyIdInput" onchange={handleCompanyChange}></lightning-input>
-                    </lightning-layout-item>
-                    <lightning-layout-item size="4" class="slds-var-p-left_medium slds-var-p-top_large">
-                        <lightning-button variant="brand" label="Save" title="save" onclick={handleSaveClick}></lightning-button>
-                    </lightning-layout-item>
+                    <template if:true={companyId}>
+                        <lightning-layout-item size="12" class="slds-var-p-right_medium slds-align_absolute-center">
+                            <lightning-formatted-text value="Company ID:"></lightning-formatted-text>
+                            <lightning-formatted-text value={companyId}></lightning-formatted-text>
+                        </lightning-layout-item>
+                    </template>
+                    <template if:false={companyId}>
+                        <lightning-layout-item size="8" class="slds-var-p-right_medium slds-align_absolute-center">
+                            <lightning-input type="password" variant="standard" name="companyIdInput" label="Enter Company Id"
+                                data-id="companyIdInput" onchange={handleCompanyChange}></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4" class="slds-var-p-left_medium slds-var-p-top_large">
+                            <lightning-button variant="brand" label="Save" title="save" onclick={handleSaveClick}></lightning-button>
+                        </lightning-layout-item>
+                    </template>
                 </lightning-layout>
             </div>
             <c-custom-toast></c-custom-toast>
