@@ -7,8 +7,9 @@
  * Ver   Date         Author                               Modification
  * 1.0   29-03-2022   Amit Kumar [amitniitmca@gmail.com]   Initial Version
 **/
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 import { subscribe, unsubscribe, APPLICATION_SCOPE, MessageContext } from 'lightning/messageService';
+import { refreshApex } from '@salesforce/apex';
 import connectionChannel from '@salesforce/messageChannel/connectionChannel__c';
 import getCurrentBasicInfo from '@salesforce/apex/LinkedInProfilePictureController.getCurrentBasicInfo';
 import getProfilePictureInfo from '@salesforce/apex/LinkedInProfilePictureController.getProfilePictureInfo';
@@ -17,46 +18,52 @@ import isCompanyIdStored from '@salesforce/apex/LinkedInProfilePictureController
 import getStoredCompanyId from '@salesforce/apex/LinkedInProfilePictureController.getStoredCompanyId';
 
 export default class LinkedinProfilePicture extends LightningElement {
-    subscription = null;
-
-    isConnected=false;
-    userName;
-    profilePictureUrl;
-    companyId;
+    @track subscription = null;
+    @track isConnected = false;
+    @track userName;
+    @track profilePictureUrl;
+    @track companyId;
+    @track storedCompanyId;
+    @track wiredIsCompanyIdStoredResult;
+    @track customToast;
 
     @wire(MessageContext)
     messageContext;
 
     @wire(isCompanyIdStored)
-    wiredIsCompanyIdStored(result){
+    wiredIsCompanyIdStored(result) {
         this.wiredIsCompanyIdStoredResult = result;
-        const {data, error} = result;
-        if(data){
-            if(data === true){
+        const { data, error } = result;
+        if (data) {
+            if (data === true) {
                 console.log('company id stored');
                 getStoredCompanyId()
-                .then(res=>{
-                    console.log(res);
-                    this.companyId = res;
-                })
-                .catch(err=>{
-                    console.log(err);
-                    this.companyId = undefined;
-                });
+                    .then(res => {
+                        this.storedCompanyId = res;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        this.storedCompanyId = undefined;
+                        this.customToast.showErrorMessage("Error", err.body.message + ", Please contact Administrator!");
+                    });
             }
-            else{
-                console.log('company id not stored');
+            else {
+                this.customToast.showErrorMessage("Error", "Company Id not stored, Please contact Administrator!");
             }
         }
-        if(error) {
-            console.log(error);
+        if (error) {
+            this.customToast.showErrorMessage("Error", error.body.message + ", Please contact Administrator!");
         }
     }
 
-    renderedCallback(){
+    renderedCallback() {
         this.subscribeMC();
+        this.customToast = this.template.querySelector("c-custom-toast");
+        if(localStorage.getItem('connected') && localStorage.getItem('connected') === 'true'){
+            this.getBasicInfo();
+        }
     }
-    
+
     subscribeMC() {
         if (!this.subscription) {
             this.subscription = subscribe(
@@ -70,49 +77,55 @@ export default class LinkedinProfilePicture extends LightningElement {
 
     handleMessage(message) {
         this.isConnected = message.isConnected;
-        if(this.isConnected === true){
-            getCurrentBasicInfo()
-            .then(res1=>{
-                this.userName = res1.localizedFirstName+" "+res1.localizedLastName;
-                getProfilePictureInfo()
-                .then(res2=>{
-                    this.setProfilePictureUrl(JSON.parse(res2));
-                })
-                .catch(err2=>{
-                    console.log(err2);
-                });
-            })
-            .catch(err1=>{
-                console.log(err1);
-            });
+        if (this.isConnected === true) {
+            this.getBasicInfo();
         }
     }
 
-    setProfilePictureUrl(result){
-        for(const ele of result.profilePicture['displayImage~'].elements){
+    getBasicInfo() {
+        getCurrentBasicInfo()
+            .then(res1 => {
+                this.userName = res1.localizedFirstName + " " + res1.localizedLastName;
+                localStorage.setItem('userId', res1.id);
+                getProfilePictureInfo()
+                    .then(res2 => {
+                        this.setProfilePictureUrl(JSON.parse(res2));
+                    })
+                    .catch(err2 => {
+                        this.customToast.showErrorMessage("Error", err2.body.message + ", Please contact Administrator!");
+                    });
+            })
+            .catch(err1 => {
+                this.customToast.showErrorMessage("Error", err1.body.message + ", Please contact Administrator!");
+            });
+    }
+
+    setProfilePictureUrl(result) {
+        for (const ele of result.profilePicture['displayImage~'].elements) {
             const size = ele.data['com.linkedin.digitalmedia.mediaartifact.StillImage'].displaySize.width;
-            if(size === 800){
+            if (size === 800) {
                 this.profilePictureUrl = ele.identifiers[0].identifier;
             }
         }
     }
 
-    handleCompanyChange(event){
+    handleCompanyChange(event) {
         this.companyId = event.detail.value;
     }
 
-    handleSaveClick(){
-        if(this.companyId === undefined || this.companyId.length === 0){
-            this.template.querySelector("c-custom-toast").showErrorMessage("Error", "Please provide Company Id to save");
+    handleSaveClick() {
+        if (this.companyId === undefined || this.companyId.length === 0) {
+            this.customToast.showErrorMessage("Error", "Please provide Company Id to save");
         }
-        else{
-            storeCompanyId({value : this.companyId})
-            .then(result =>{
-                this.template.querySelector("c-custom-toast").showSuccessMessage("Success", "Company Id stored Successfully!");    
-            })
-            .catch(error=>{
-                this.template.querySelector("c-custom-toast").showErrorMessage("Error", error.message+", Please contact your administrator!");
-            });
+        else {
+            storeCompanyId({ value: this.companyId })
+                .then(result => {
+                    this.customToast.showSuccessMessage("Success", "Company Id stored Successfully!");
+                    refreshApex(this.wiredIsCompanyIdStoredResult);
+                })
+                .catch(error => {
+                    this.customToast.showErrorMessage("Error", error.body.message + ", Please contact your administrator!");
+                });
         }
     }
 

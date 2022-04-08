@@ -20,13 +20,13 @@
                             <label>{userName}</label>
                         </div>
                     </lightning-layout-item>
-                    <template if:true={companyId}>
+                    <template if:true={storedCompanyId}>
                         <lightning-layout-item size="12" class="slds-var-p-right_medium slds-align_absolute-center">
-                            <lightning-formatted-text value="Company ID:"></lightning-formatted-text>
-                            <lightning-formatted-text value={companyId}></lightning-formatted-text>
+                            <lightning-input type="password" variant="standard" name="companyIdInputDisplay" label="Company Id"
+                                data-id="companyIdInputDisplay" disabled="true" value={storedCompanyId}></lightning-input>
                         </lightning-layout-item>
                     </template>
-                    <template if:false={companyId}>
+                    <template if:false={storedCompanyId}>
                         <lightning-layout-item size="8" class="slds-var-p-right_medium slds-align_absolute-center">
                             <lightning-input type="password" variant="standard" name="companyIdInput" label="Enter Company Id"
                                 data-id="companyIdInput" onchange={handleCompanyChange}></lightning-input>
