@@ -213,10 +213,12 @@ export default class LinkedinSetupPage extends LightningElement {
                     this.connectionStatusClass = "slds-var-p-around_medium connection-status-connected"
                     const connectionLoad = { isConnected: true };
                     publish(this.messageContext, connectionChannel, connectionLoad);
+                    localStorage.setItem('connected', 'true');
                 }
                 else {
                     this.connectionStatus = "Not Connected";
                     this.connectionStatusClass = "slds-var-p-around_medium connection-status-not-connected";
+                    localStorage.setItem('connected', 'false');
                     const connectionLoad = { isConnected: false };
                     publish(this.messageContext, connectionChannel, connectionLoad);
                 }
@@ -226,5 +228,18 @@ export default class LinkedinSetupPage extends LightningElement {
                 const connectionLoad = { isConnected: false };
                 publish(this.messageContext, connectionChannel, connectionLoad);
             });
+    }
+
+    renderedCallback(){
+        if(localStorage.getItem('connected')){
+            if(localStorage.getItem('connected') === 'true'){
+                this.connectionStatus = "Connected";
+                this.connectionStatusClass = "slds-var-p-around_medium connection-status-connected"
+            }
+            else{
+                this.connectionStatus = "Not Connected";
+                this.connectionStatusClass = "slds-var-p-around_medium connection-status-not-connected";
+            }
+        }
     }
 }
