@@ -1,7 +1,7 @@
 /**
  * @description       : 
  * @author            : Amit Kumar [amitniitmca@gmail.com]
- * @last modified on  : 04-04-2022
+ * @last modified on  : 08-04-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -59,7 +59,7 @@ export default class LinkedinProfilePicture extends LightningElement {
     renderedCallback() {
         this.subscribeMC();
         this.customToast = this.template.querySelector("c-custom-toast");
-        if(localStorage.getItem('connected') && localStorage.getItem('connected') === 'true'){
+        if(sessionStorage.getItem('connected') && sessionStorage.getItem('connected') === 'true'){
             this.getBasicInfo();
         }
     }
@@ -86,7 +86,7 @@ export default class LinkedinProfilePicture extends LightningElement {
         getCurrentBasicInfo()
             .then(res1 => {
                 this.userName = res1.localizedFirstName + " " + res1.localizedLastName;
-                localStorage.setItem('userId', res1.id);
+                sessionStorage.setItem('userId', res1.id);
                 getProfilePictureInfo()
                     .then(res2 => {
                         this.setProfilePictureUrl(JSON.parse(res2));

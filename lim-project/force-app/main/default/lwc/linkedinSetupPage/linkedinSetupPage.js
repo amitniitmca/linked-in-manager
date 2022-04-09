@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Amit Kumar [amitniitmca@gmail.com]
  * @group             : 
- * @last modified on  : 29-03-2022
+ * @last modified on  : 08-04-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -213,12 +213,12 @@ export default class LinkedinSetupPage extends LightningElement {
                     this.connectionStatusClass = "slds-var-p-around_medium connection-status-connected"
                     const connectionLoad = { isConnected: true };
                     publish(this.messageContext, connectionChannel, connectionLoad);
-                    localStorage.setItem('connected', 'true');
+                    sessionStorage.setItem('connected', 'true');
                 }
                 else {
                     this.connectionStatus = "Not Connected";
                     this.connectionStatusClass = "slds-var-p-around_medium connection-status-not-connected";
-                    localStorage.setItem('connected', 'false');
+                    sessionStorage.setItem('connected', 'false');
                     const connectionLoad = { isConnected: false };
                     publish(this.messageContext, connectionChannel, connectionLoad);
                 }
@@ -231,8 +231,8 @@ export default class LinkedinSetupPage extends LightningElement {
     }
 
     renderedCallback(){
-        if(localStorage.getItem('connected')){
-            if(localStorage.getItem('connected') === 'true'){
+        if(sessionStorage.getItem('connected')){
+            if(sessionStorage.getItem('connected') === 'true'){
                 this.connectionStatus = "Connected";
                 this.connectionStatusClass = "slds-var-p-around_medium connection-status-connected"
             }

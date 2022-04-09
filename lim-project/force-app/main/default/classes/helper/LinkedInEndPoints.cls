@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Amit Kumar [amitniitmca@gmail.com]
  * @group             : 
- * @last modified on  : 27-03-2022
+ * @last modified on  : 08-04-2022
  * @last modified by  : Amit Kumar [amitniitmca@gmail.com]
  * Modifications Log
  * Ver   Date         Author                               Modification
@@ -28,5 +28,9 @@ public inherited sharing class LinkedInEndPoints {
 
     public static String profilePicture(){
         return NAMED_CREDENTIALS+'/me?projection=(id,profilePicture(displayImage~digitalmediaAsset:playableStreams))';
+    }
+
+    public static String shareByOwner(String personId){
+        return NAMED_CREDENTIALS+'/shares?q=owners&owners=urn:li:person:'+personId+'&sortBy=LAST_MODIFIED&sharesPerOwner=100';
     }
 }
